@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "76009412361",
+    "firebase_url": "https://tswearn-c3837.firebaseio.com",
+    "project_id": "tswearn-c3837",
+    "storage_bucket": "tswearn-c3837.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76009412361:android:341f348ece3fc2efc725d8",
+        "android_client_info": {
+          "package_name": "com.tswearn.TSWEarn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76009412361-hlvgotidccurufmes7o5io703fr186m9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tswearn.TSWEarn",
+            "certificate_hash": "ee79999a82ffbf5c788df8bc9aebfeeacdd3e43b"
+          }
+        },
+        {
+          "client_id": "76009412361-e1fgqu1pn5ut80qg2f687ggcau1339p1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAMBJsTQkqBCXf9wc5UXuF3LYm0NgX9cs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76009412361-e1fgqu1pn5ut80qg2f687ggcau1339p1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

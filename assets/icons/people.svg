@@ -1,0 +1,13 @@
+<svg id="people_alt-24px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_17" data-name="Group 17">
+    <rect id="Rectangle_70" data-name="Rectangle 70" width="24" height="24" fill="none"/>
+  </g>
+  <g id="Group_19" data-name="Group 19" transform="translate(1 4)">
+    <g id="Group_18" data-name="Group 18">
+      <path id="Path_265" data-name="Path 265" d="M16.67,13.13A4.651,4.651,0,0,1,19,17v3h4V17C23,14.82,19.43,13.53,16.67,13.13Z" transform="translate(-1 -4)" fill="#033693"/>
+      <path id="Path_266" data-name="Path 266" d="M15,12a4,4,0,0,0,0-8,4.178,4.178,0,0,0-1.33.24,5.98,5.98,0,0,1,0,7.52A4.178,4.178,0,0,0,15,12Z" transform="translate(-1 -4)" fill="#033693"/>
+      <path id="Path_267" data-name="Path 267" d="M9,12A4,4,0,1,0,5,8,4,4,0,0,0,9,12ZM9,6A2,2,0,1,1,7,8,2.006,2.006,0,0,1,9,6Z" transform="translate(-1 -4)" fill="#033693"/>
+      <path id="Path_268" data-name="Path 268" d="M9,13c-2.67,0-8,1.34-8,4v3H17V17C17,14.34,11.67,13,9,13Zm6,5H3v-.99C3.2,16.29,6.3,15,9,15s5.8,1.29,6,2Z" transform="translate(-1 -4)" fill="#033693"/>
+    </g>
+  </g>
+</svg>
