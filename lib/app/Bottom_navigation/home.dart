@@ -16,6 +16,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TabItems _currentTab = TabItems.home;
 
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+
+
   final Map<TabItems, GlobalKey<NavigatorState>> navigatiorKeys = {
     TabItems.home: GlobalKey<NavigatorState>(),
     TabItems.friends: GlobalKey<NavigatorState>(),

@@ -9,7 +9,19 @@ import 'package:TSWEarn/app/services/theme/app_theme_provider.dart';
 import 'package:TSWEarn/app/widgets/home_screen_widgets/scroll_grids_and_lists.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  HomeScreenState createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
+
+  // @override
+  // void initState() {
+  //   HomeScreen();
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;

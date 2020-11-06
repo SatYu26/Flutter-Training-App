@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:TSWEarn/app/Bottom_navigation/home.dart';
 import 'package:TSWEarn/app/services/auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,9 @@ import 'package:TSWEarn/app/widgets/auth_screen_widgets/build_button.dart';
 import 'package:TSWEarn/app/widgets/auth_screen_widgets/text_field_container.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login2Screen extends StatefulWidget {
   @override
@@ -25,22 +29,15 @@ class _Login2ScreenState extends State<Login2Screen> {
 
   Auth auth = Auth();
 
-  _login() async{
-    try{
+  _login() async {
+    try {
       await _googleSignIn.signIn();
       setState(() {
         _isLoggedIn = true;
       });
-    } catch (err){
+    } catch (err) {
       print(err);
     }
-  }
-
-  _logout() async{
-    await _googleSignIn.signOut();
-    setState(() {
-      _isLoggedIn = false;
-    });
   }
 
   void _showErrorDailog(var errorMessage) {
@@ -100,28 +97,59 @@ class _Login2ScreenState extends State<Login2Screen> {
     });
     GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
     AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
     AuthResult authResult = await _auth.signInWithCredential(credential);
     await googleSignInAccount.authentication.whenComplete(() {
-        setState(
-              () {
-            _isLoading = false;
-          },
-        );
+      setState(
+        () {
+          _isLoading = false;
+        },
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) => Home(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    });
+  }
+
+  bool isLoggedIn = false;
+
+  void onLoginStatusChanged(bool isLoggedIn) {
+    setState(() {
+      this.isLoggedIn = isLoggedIn;
+    });
+  }
+
+  void initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult = await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        onLoginStatusChanged(true);
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (BuildContext context) => Home(),
           ),
-              (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
         );
-    });
+        break;
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +280,7 @@ class _Login2ScreenState extends State<Login2Screen> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        // .... Sing in with facebook
+                        initiateFacebookLogin();
                       },
                       child: Image.asset(
                         'assets/images/facebook.png',
@@ -264,7 +292,7 @@ class _Login2ScreenState extends State<Login2Screen> {
                       width: 40,
                     ),
                     InkWell(
-                      onTap: () async{
+                      onTap: () async {
                         _login();
                         _gsubmit();
                       },

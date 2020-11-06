@@ -2,11 +2,13 @@ import 'package:TSWEarn/app/providers/pedometer_steps_provider.dart';
 import 'package:TSWEarn/app/screens/auth_screen/login_2_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:TSWEarn/app/services/theme/app_theme_provider.dart';
 import 'package:TSWEarn/app/widgets/profile_screen_widgets/settings_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _SettingsScreen extends State<SettingsScreen> {
   bool _isLoggedIn = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final facebookLogin = FacebookLogin();
 
   _save(String token, int taps, int shaked) async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,8 +32,27 @@ class _SettingsScreen extends State<SettingsScreen> {
     //prefs.setString('steps', steps);
   }
 
-  _logout() async{
+  _logout() async {
     await _googleSignIn.signOut();
+    setState(() {
+      _isLoggedIn = false;
+    });
+  }
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  Future<Null> _signOut(BuildContext context) async {
+    await facebookSignIn.logOut();
+    await setState(() {
+      _isLoggedIn = false;
+    });
+    // await facebookLogin.logOut();
+    // await _googleSignIn.signOut();
+    // await FirebaseAuth.instance.signOut();
+  }
+
+  _logoutFB() {
+    facebookLogin.logOut();
     setState(() {
       _isLoggedIn = false;
     });
@@ -111,6 +133,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                           await prefs.clear();
                           //steps.reset();
                           _logout();
+                          // _logoutFB();
+                          _signOut(context);
                           Navigator.of(context, rootNavigator: true)
                               .pushAndRemoveUntil(
                             MaterialPageRoute(

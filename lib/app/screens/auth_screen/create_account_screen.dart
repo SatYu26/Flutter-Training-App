@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:TSWEarn/app/widgets/auth_screen_widgets/build_button.dart';
 import 'package:TSWEarn/app/widgets/auth_screen_widgets/text_field_container.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -109,6 +110,39 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       });
     } catch (err){
       print(err);
+    }
+  }
+
+  bool isLoggedIn = false;
+
+  void onLoginStatusChanged(bool isLoggedIn) {
+    setState(() {
+      this.isLoggedIn = isLoggedIn;
+    });
+  }
+
+  void initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult = await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        onLoginStatusChanged(true);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => Home(),
+          ),
+              (Route<dynamic> route) => false,
+        );
+        break;
     }
   }
 
@@ -274,7 +308,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        // .... Sing in with facebook
+                        initiateFacebookLogin();
                       },
                       child: Image.asset(
                         'assets/images/facebook.png',
