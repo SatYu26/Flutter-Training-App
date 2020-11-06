@@ -1,9 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:TSWEarn/app/widgets/auth_screen_widgets/build_button.dart';
 import 'package:TSWEarn/app/widgets/auth_screen_widgets/text_field_container.dart';
 
 
 class ForgetPasswordScreen extends StatelessWidget {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  String _email;
+  final formKeyf = new GlobalKey<FormState>();
+
+  bool validateAndSave() {
+    final form = formKeyf.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  } //validateAndSave
+
+  void validateAndSubmit() async {
+    if (validateAndSave()) {
+      try {
+        FirebaseAuth.instance.sendPasswordResetEmail(email: _email).then(
+                (value) =>
+                print("Please Check Your E-mail for Further Instructions"));
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -62,17 +88,23 @@ class ForgetPasswordScreen extends StatelessWidget {
                 top: 280,
                 child: Container(
                   width: deviceSize.width * 0.85,
-                  child: TextFieldsContainer(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Email Address',
-                        hintStyle: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[400],
+                  child: Form(
+                    key: formKeyf,
+                    child: TextFieldsContainer(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Email Address',
+                          hintStyle: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[400],
+                          ),
+                          border: InputBorder.none,
                         ),
-                        border: InputBorder.none,
+                        validator: (value) =>
+                        value.isEmpty ? 'Please enter valid Email address' : null,
+                        onSaved: (value) => _email = value,
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      keyboardType: TextInputType.emailAddress,
                     ),
                   ),
                 ),
@@ -81,7 +113,10 @@ class ForgetPasswordScreen extends StatelessWidget {
                 width: 190,
                 bottom: 170,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    await validateAndSubmit();
+                    formKeyf.currentState.reset();
+                  },
                   child: BuildButton(
                     text: 'Send',
                     color: Colors.white,
