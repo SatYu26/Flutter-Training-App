@@ -9,18 +9,7 @@ import 'package:TSWEarn/app/services/theme/app_theme_provider.dart';
 import 'package:TSWEarn/app/widgets/home_screen_widgets/scroll_grids_and_lists.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  HomeScreenState createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
-
-  // @override
-  // void initState() {
-  //   HomeScreen();
-  //   super.initState();
-  // }
+class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +82,7 @@ class HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   child: RadialProgress(
-                    totalActivity: localStates.taps + localStates.shaked,
+                    totalActivity: localStates.taps == null ? 0 : localStates.taps + localStates.shaked == null ? 0 : localStates.shaked,
                   ),
                 ),
               ),

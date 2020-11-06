@@ -21,14 +21,14 @@ class _StartSplashState extends State<StartSplash> {
     final value1 = prefs.get(key1) ?? 0;
     final value2 = prefs.get(key2) ?? 0;
     //final value3 = prefs.get('steps') ?? 0;
-    if (value != '0' || value1 != '0' || value2 != '0') {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    }
+    // if (value != '0' || value1 != '0' || value2 != '0') {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(
+    //       builder: (BuildContext context) => Home(),
+    //     ),
+    //     (Route<dynamic> route) => false,
+    //   );
+    // }
   }
 
   @override
