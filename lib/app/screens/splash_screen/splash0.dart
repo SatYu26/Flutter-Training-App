@@ -45,14 +45,14 @@ class _StartSplashState extends State<StartSplash> {
         );
       },
     );
-    notificationPlugin.setListenerForLowerVersions(onNotificationInLowerVersions);
-    notificationPlugin.setOnNotificationClick(onNotificationClick);
-    notificationPlugin.showNotificationWithAttachment();
+    // notificationPlugin.setListenerForLowerVersions(onNotificationInLowerVersions);
+    // notificationPlugin.setOnNotificationClick(onNotificationClick);
+    // notificationPlugin.showNotificationWithAttachment();
   }
 
-   onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
-    print('Notification Received ${receivedNotification.id}');
-  }
+  //  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
+  //   print('Notification Received ${receivedNotification.id}');
+  // }
   onNotificationClick(String payload) {}
 
   @override

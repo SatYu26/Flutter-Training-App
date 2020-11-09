@@ -79,7 +79,7 @@ class NotificationPlugin {
       priority: Priority.High,
       playSound: true,
       enableVibration: true,
-      
+
       styleInformation: DefaultStyleInformation(true, true),
     );
     var iosChannelSpecifics = IOSNotificationDetails();

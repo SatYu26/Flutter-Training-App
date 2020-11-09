@@ -1,6 +1,7 @@
 import 'package:TSWEarn/app/providers/local_state.dart';
 import 'package:TSWEarn/app/providers/pedometer_steps_provider.dart';
 import 'package:TSWEarn/app/screens/home_screen/radial_progress.dart';
+import 'package:TSWEarn/app/services/local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,8 +9,30 @@ import 'package:TSWEarn/app/screens/home_screen/total_coins_screen.dart';
 import 'package:TSWEarn/app/services/theme/app_theme_provider.dart';
 import 'package:TSWEarn/app/widgets/home_screen_widgets/scroll_grids_and_lists.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int fabIconNumber = 0;
+  Icon fab = Icon(
+    Icons.refresh,
+  );
+
+  @override
+  void initState() {
+    startForegroundService();
+    super.initState();
+  }
+
+  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
+    print('Notification Received ${receivedNotification.id}');
+  }
+
+  onNotificationClick(String payload) {}
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +86,30 @@ class HomeScreen extends StatelessWidget {
               Positioned(
                 top: deviceSize.height * 0.08,
                 right: 0,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
+                child: FloatingActionButton(
+                  child: fab,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  onPressed: () {
+                    setState(()  {
+                      if (fabIconNumber == 0) {
+                        fab = Icon(
+                          Icons.notifications_off,
+                        );
+                        FlutterForegroundPlugin.stopForegroundService();
+                        fabIconNumber = 1;
+                      } else {
+                        fab = Icon(Icons.notifications_active);
+                        startForegroundService();
+                        notificationPlugin.setListenerForLowerVersions(
+                            onNotificationInLowerVersions);
+                        notificationPlugin
+                            .setOnNotificationClick(onNotificationClick);
+                        notificationPlugin.showNotificationWithAttachment();
+                        fabIconNumber = 0;
+                      }
+                    });
+                  },
                 ),
               ),
               Positioned(
@@ -82,7 +123,11 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   child: RadialProgress(
-                    totalActivity: localStates.taps == null ? 0 : localStates.taps + localStates.shaked == null ? 0 : localStates.shaked,
+                    totalActivity: localStates.taps == null
+                        ? 0
+                        : localStates.taps + localStates.shaked == null
+                            ? 0
+                            : localStates.shaked,
                   ),
                 ),
               ),
@@ -103,4 +148,25 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void startForegroundService() async {
+  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
+  await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
+  await FlutterForegroundPlugin.startForegroundService(
+    holdWakeLock: false,
+    onStarted: () {
+      print("Foreground on Started");
+    },
+    onStopped: () {
+      print("Foreground on Stopped");
+    },
+    title: "Flutter Foreground Service",
+    content: "This is Content",
+    iconName: "ic_stat_hot_tub",
+  );
+}
+
+void globalForegroundService() {
+  debugPrint("current datetime is ${DateTime.now()}");
 }
