@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tswearn.TSWEarn">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -77,8 +78,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~4354546703"/>
     </application>
-    <uses-sdk
-        android:minSdkVersion="23"
-        tools:overrideLibrary="changjoopark.com.flutter_foreground_plugin" />
+<!--    <uses-sdk-->
+<!--        android:minSdkVersion="23"-->
+<!--        tools:overrideLibrary="changjoopark.com.flutter_foreground_plugin" />-->
 </manifest>

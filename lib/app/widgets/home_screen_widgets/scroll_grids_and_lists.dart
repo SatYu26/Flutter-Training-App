@@ -1,3 +1,4 @@
+import 'package:TSWEarn/app/providers/levels_provider.dart';
 import 'package:TSWEarn/app/providers/local_state.dart';
 import 'package:TSWEarn/app/providers/pedometer_steps_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,9 +41,15 @@ class _ScrollGridsAndListsState extends State<ScrollGridsAndLists> {
 
   @override
   Widget build(BuildContext context) {
-    final localStates = Provider.of<LocalState>(context);
-    final steps = Provider.of<PedometerStepsProvider>(context);
-    steps.getBurnedRun();
+    final localStates = Provider.of<LocalState>(context,listen: true);
+    final steps = Provider.of<PedometerStepsProvider>(context,listen: true);
+
+    Provider.of<PedometerStepsProvider>(context,listen: true).addListener(() {
+      int newSteps = int.parse(Provider.of<PedometerStepsProvider>(context,listen: false).steps.toString(), radix: 10);
+      Provider.of<LevelProvider>(context,listen: false).setLevel(newSteps);
+    });
+
+    steps.getBurnedRun(steps.steps);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       width: double.infinity,
@@ -107,24 +114,15 @@ class _ScrollGridsAndListsState extends State<ScrollGridsAndLists> {
                 number: '${steps.calories}',
                 text: 'Calories',
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => ShopScreen(),
-                    ),
-                  );
-                },
-                child: GridContainers(
-                  svgImage: 'assets/icons/cup.svg',
-                  number: '0/5',
-                  text: 'Daily Rewards',
-                ),
-              ),
               GridContainers(
                 svgImage: 'assets/icons/run.svg',
-                number: '0',
+                number: '${steps.speed}',
                 text: 'Speed',
+              ),
+              GridContainers(
+                svgImage: 'assets/icons/loction.svg',
+                number: '${steps.distanceJog}',
+                text: 'Travel',
               ),
             ]),
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -133,6 +131,28 @@ class _ScrollGridsAndListsState extends State<ScrollGridsAndLists> {
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
             ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 20,
+            ),
+          ),
+          SliverFixedExtentList(
+            itemExtent: 90,
+            delegate: SliverChildListDelegate([
+              Levels(
+                level: 'Daily Rewards',
+                text: '0/5 Earned',
+                isLevels: true,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => ShopScreen(),
+                    ),
+                  );
+                },
+              ),
+            ]),
           ),
           SliverToBoxAdapter(
             child: SizedBox(

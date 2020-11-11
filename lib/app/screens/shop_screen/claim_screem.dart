@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:TSWEarn/app/providers/local_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TSWEarn/app/providers/monsoon_deals_provider.dart';
@@ -17,107 +18,111 @@ class ClaimScreen extends StatelessWidget {
     final productData =
         products.firstWhere((product) => product.id == productId);
     //final themeMode = Provider.of<AppThemeProvider>(context, listen: false);
+    final localStates = Provider.of<LocalState>(context);
     return Scaffold(
-      body: Container(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: ImageHeader(
-                maxExtent: 350,
-                minExtent: 200,
-                image: productData.svgAssets,
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
+      body: GestureDetector(
+        onTap: () => localStates.increasTaps(),
+        child: Container(
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: ImageHeader(
+                  maxExtent: 350,
+                  minExtent: 200,
+                  image: productData.svgAssets,
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: ThemeModel.theme(context)
-                          ? Color(0xFF505050)
-                          : Colors.white,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 20, right: 10),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'What’s Inside',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: ThemeModel.theme(context)
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero,',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: ThemeModel.theme(context)
-                                    ? Color(0xFFEFEFEF)
-                                    : Colors.grey[500],
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'How to redeem',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: ThemeModel.theme(context)
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, , sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscin, sed diam nonumy eirmod',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: ThemeModel.theme(context)
-                                    ? Color(0xFFEFEFEF)
-                                    : Colors.grey[500],
-                              ),
-                            ),
-                            SizedBox(height: 30),
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF4D59DE),
-                                borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(30),
-                                  right: Radius.circular(30),
-                                ),
-                              ),
-                              child: Text(
-                                'Redeem Coins',
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: ThemeModel.theme(context)
+                            ? Color(0xFF505050)
+                            : Colors.white,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, top: 20, right: 10),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'What’s Inside',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  fontSize: 20,
+                                  color: ThemeModel.theme(context)
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 250),
-                          ],
+                              SizedBox(height: 20),
+                              Text(
+                                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero,',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: ThemeModel.theme(context)
+                                      ? Color(0xFFEFEFEF)
+                                      : Colors.grey[500],
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'How to redeem',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: ThemeModel.theme(context)
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, , sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscin, sed diam nonumy eirmod',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: ThemeModel.theme(context)
+                                      ? Color(0xFFEFEFEF)
+                                      : Colors.grey[500],
+                                ),
+                              ),
+                              SizedBox(height: 30),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF4D59DE),
+                                  borderRadius: BorderRadius.horizontal(
+                                    left: Radius.circular(30),
+                                    right: Radius.circular(30),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Redeem Coins',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 250),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

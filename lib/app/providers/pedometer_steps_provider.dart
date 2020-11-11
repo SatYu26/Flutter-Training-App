@@ -3,19 +3,40 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
+
+import 'levels_provider.dart';
 
 class PedometerStepsProvider with ChangeNotifier {
   String distanceInKm = "0";
+  double distanceJog = 0;
   String calories = "0";
+  int speed = 0;
 
-  String steps = '0';
+  int steps = 0;
   StreamSubscription<int> _subscription;
 
   double _num;
   double _convert;
   double _kmx;
   double burnedx;
+
+  var geolocator = Geolocator();
+  // var options = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+
+  Future<void> getSpeed() async {
+    var speed2;
+    speed2 = Geolocator.getPositionStream().listen((position) {
+      var speedInMps = position.speed; // this is your speed
+      return speedInMps;
+    });
+    speed2 = num.parse(speed2.toStringAsFixed(2));
+    speed = speed2;
+  }
+
 
   void setUpPedometer() {
     Pedometer pedometer = new Pedometer();
@@ -30,7 +51,7 @@ class PedometerStepsProvider with ChangeNotifier {
 
   saveStepsIntoSharedPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('steps', steps);
+    prefs.setInt('steps', steps);
   }
 
   loadStepsFromSharedPrefs() async {
@@ -41,7 +62,13 @@ class PedometerStepsProvider with ChangeNotifier {
   void _onData(int stepCountValue) async {
     // print(stepCountValue); //printing number of steps per console
 
-    steps = "$stepCountValue";
+    steps = stepCountValue;
+    // saveStepsIntoSharedPrefs();
+    print("dsadadasdad ${steps}");
+
+
+
+    steps = stepCountValue;
     //saveStepsIntoSharedPrefs();
     notifyListeners();
 
@@ -71,7 +98,7 @@ class PedometerStepsProvider with ChangeNotifier {
   void reset() {
     int stepCountValue = 0;
     stepCountValue = 0;
-    steps = "$stepCountValue";
+    steps = stepCountValue;
     notifyListeners();
   }
 
@@ -94,13 +121,36 @@ class PedometerStepsProvider with ChangeNotifier {
 
     _kmx = num.parse(distancekmx.toStringAsFixed(2));
     notifyListeners();
+
+  }
+
+  Future<void> getDistanceJog(double _numbers) async {
+    // var dist2;
+    var distance = ((_numbers * 78) / 100000);
+    var distancejog;
+    // distance = num.parse(distance.toStringAsFixed(2)); //two decimal places
+    //print(distance.runtimeType);
+
+    if (speed > 8) {
+      distancejog = num.parse(distance.toStringAsFixed(2));
+      return distancejog;
+    }
+
+    distanceJog = distancejog;
+    //print(_km);
+
+    // _kmx = num.parse(distancekmx.toStringAsFixed(2));
+    notifyListeners();
+
   }
 
   //function to determine the calories burned in kilometers using number of steps
-  void getBurnedRun() {
-    var cal = _kmx; //two decimal places
+  void getBurnedRun(int number) async {
+    var cal = number * 0.04; //two decimal places
+    cal = num.parse(cal.toStringAsFixed(2));
     calories = "$cal";
     //print(_calories);
+    await Future.delayed(const Duration(milliseconds: 100), (){});
     notifyListeners();
   }
 }

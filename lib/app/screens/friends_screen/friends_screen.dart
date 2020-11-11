@@ -1,8 +1,10 @@
+import 'package:TSWEarn/app/providers/local_state.dart';
 import 'package:flutter/material.dart';
 import 'package:TSWEarn/app/screens/friends_screen/activity_Page.dart';
 import 'package:TSWEarn/app/screens/friends_screen/over_view_page.dart';
 import 'package:TSWEarn/app/services/theme/app_theme_provider.dart';
 import 'package:TSWEarn/app/widgets/friends_screen_widgets/search.dart';
+import 'package:provider/provider.dart';
 
 
 class FriendsScreen extends StatefulWidget {
@@ -56,61 +58,67 @@ class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
     //final themeMode = Provider.of<AppThemeProvider>(context, listen: false);
+    final localStates = Provider.of<LocalState>(context);
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        color: ThemeModel.theme(context) ? Color(0xFF363636) : Color(0xFF4D59DE),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 70),
-            Search(),
-            SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _buildButton(0, () {
-                    controller.animateToPage(
-                      0,
-                      duration: Duration(microseconds: 100),
-                      curve: Curves.easeIn,
-                    );
-                  }),
-                  _buildButton(1, () {
-                    controller.animateToPage(
-                      1,
-                      duration: Duration(microseconds: 100),
-                      curve: Curves.easeIn,
-                    );
-                  }),
-                ],
-              ),
-            ),
-            SizedBox(height: 15),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(left: 20, top: 20),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: PageView(
-                  controller: controller,
-                  physics: NeverScrollableScrollPhysics(),
+        resizeToAvoidBottomInset:false,
+        resizeToAvoidBottomPadding:false,
+      body: GestureDetector(
+        onTap: () => localStates.increasTaps(),
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          color: ThemeModel.theme(context) ? Color(0xFF363636) : Color(0xFF4D59DE),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 70),
+              Search(),
+              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    OverViewPage(),
-                    ActivityPage(),
+                    _buildButton(0, () {
+                      controller.animateToPage(
+                        0,
+                        duration: Duration(microseconds: 100),
+                        curve: Curves.easeIn,
+                      );
+                    }),
+                    _buildButton(1, () {
+                      controller.animateToPage(
+                        1,
+                        duration: Duration(microseconds: 100),
+                        curve: Curves.easeIn,
+                      );
+                    }),
                   ],
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 15),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(left: 20, top: 20),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: PageView(
+                    controller: controller,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      OverViewPage(),
+                      ActivityPage(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -41,6 +41,10 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   google_sign_in: ^4.5.6
   flutter_facebook_login: ^3.0.0
+  geolocator: ^6.1.6
+  location: ^3.0.2
+  firebase_admob: ^0.9.3
+  onesignal_flutter: ^2.6.1
 
 
 dev_dependencies:

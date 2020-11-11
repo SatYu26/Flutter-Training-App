@@ -1,5 +1,10 @@
+import 'package:TSWEarn/app/providers/local_state.dart';
+import 'package:TSWEarn/app/providers/pedometer_steps_provider.dart';
+import 'package:TSWEarn/app/providers/levels_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RadialProgress extends StatefulWidget {
   final double goalCompleted = 0.8;
@@ -20,6 +25,9 @@ class _RadialProgressState extends State<RadialProgress>
 
   double progressDegrees = 0;
   var count = 0;
+  var coinCounter = 0;
+  var levelCounter = 0;
+  var level = 0;
 
   @override
   void initState() {
@@ -35,16 +43,35 @@ class _RadialProgressState extends State<RadialProgress>
       });
 
     _radialProgressAnimationController.forward();
+
+    final steps = Provider.of<PedometerStepsProvider>(context, listen: false);
+    final localStates = Provider.of<LocalState>(context, listen: false);
+    localStates.shakeHands();
+    //steps.startListening();
+    steps.setUpPedometer();
+    localStates.loadTapsFromSharedPrefs();
+    localStates.loadShakedFromSharedPrefs();
+    // steps.loadStepsFromSharedPrefs();
   }
 
   @override
   void dispose() {
     _radialProgressAnimationController.dispose();
+    final localStates = Provider.of<LocalState>(context, listen: false);
+    localStates.disposeDetector();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final localStates = Provider.of<LocalState>(context);
+    final steps = Provider.of<PedometerStepsProvider>(context);
+    steps.getBurnedRun(steps.steps);
+    level = Provider.of<LevelProvider>(context, listen: true).level;
+    Provider.of<LevelProvider>(context, listen: true).addListener(() {
+      level = Provider.of<LevelProvider>(context, listen: false).level;
+    });
+
     return CustomPaint(
       child: Container(
         height: 170.0,
@@ -59,14 +86,14 @@ class _RadialProgressState extends State<RadialProgress>
           child: Column(
             children: <Widget>[
               Text(
-                'Level 2',
+                'Level ${level}',
                 style: TextStyle(
                   fontSize: 20.0,
                   color: Color(0xFF4D59DE),
                 ),
               ),
               Text(
-                '04.00',
+                '$coinCounter', // HERE
                 style: TextStyle(
                   fontSize: 45.0,
                   fontWeight: FontWeight.w600,
@@ -113,8 +140,7 @@ class RadialPainter extends CustomPainter {
     canvas.drawCircle(center, size.width / 2, paint);
 
     Paint progressPaint = Paint()
-      ..shader = LinearGradient(
-              colors: [Colors.purpleAccent, Colors.blue])
+      ..shader = LinearGradient(colors: [Colors.purpleAccent, Colors.blue])
           .createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
