@@ -38,15 +38,11 @@ class _StartSplashState extends State<StartSplash> {
     Future.delayed(
       Duration(seconds: 2),
       () => {
-        // Navigator.of(context).push(
-        //   CupertinoPageRoute(
-        //     builder: (ctx) => SplashScreen(),
-        //   ),
-        // ),
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => SplashScreen()))
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (ctx) => SplashScreen(),
+          ),
+        ),
       },
     );
     // notificationPlugin.setListenerForLowerVersions(onNotificationInLowerVersions);
@@ -57,7 +53,7 @@ class _StartSplashState extends State<StartSplash> {
   //  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
   //   print('Notification Received ${receivedNotification.id}');
   // }
-  // onNotificationClick(String payload) {}
+  onNotificationClick(String payload) {}
 
   @override
   Widget build(BuildContext context) {

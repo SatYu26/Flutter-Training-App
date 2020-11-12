@@ -1,6 +1,7 @@
 import 'package:TSWEarn/app/providers/local_state.dart';
 import 'package:TSWEarn/app/providers/pedometer_steps_provider.dart';
 import 'package:TSWEarn/app/screens/home_screen/radial_progress.dart';
+import 'package:TSWEarn/app/services/auth/auth.dart';
 import 'package:TSWEarn/app/services/local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fabIconNumber = 1;
                         } else {
                           fab = Icon(Icons.notifications_active);
-                          startForegroundService();
+                          // startForegroundService();
                           notificationPlugin.setListenerForLowerVersions(
                               onNotificationInLowerVersions);
                           notificationPlugin
@@ -182,24 +183,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-void startForegroundService() async {
-  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
-  await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
-  await FlutterForegroundPlugin.startForegroundService(
-    holdWakeLock: false,
-    onStarted: () {
-      print("Foreground on Started");
-    },
-    onStopped: () {
-      print("Foreground on Stopped");
-    },
-    title: "Flutter Foreground Service",
-    content: "This is Content",
-    iconName: "ic_stat_hot_tub",
-  );
-}
-
-void globalForegroundService() {
-  debugPrint("current datetime is ${DateTime.now()}");
-}
+// void startForegroundService() async {
+//   await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
+//   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
+//   await FlutterForegroundPlugin.startForegroundService(
+//     holdWakeLock: false,
+//     onStarted: () {
+//       print("Foreground on Started");
+//     },
+//     onStopped: () {
+//       print("Foreground on Stopped");
+//     },
+//     title: "Flutter Foreground Service",
+//     content: "This is Content",
+//     iconName: "ic_stat_hot_tub",
+//   );
+// }
+//
+// void globalForegroundService() {
+//   debugPrint("current datetime is ${DateTime.now()}");
+// }
 

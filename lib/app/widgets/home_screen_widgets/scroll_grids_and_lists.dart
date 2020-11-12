@@ -41,13 +41,13 @@ class _ScrollGridsAndListsState extends State<ScrollGridsAndLists> {
 
   @override
   Widget build(BuildContext context) {
-    final localStates = Provider.of<LocalState>(context,listen: true);
+    final localStates = Provider.of<LocalState>(context);
     final steps = Provider.of<PedometerStepsProvider>(context,listen: true);
 
-    Provider.of<PedometerStepsProvider>(context,listen: true).addListener(() {
-      int newSteps = int.parse(Provider.of<PedometerStepsProvider>(context,listen: false).steps.toString(), radix: 10);
-      Provider.of<LevelProvider>(context,listen: false).setLevel(newSteps);
-    });
+    // Provider.of<PedometerStepsProvider>(context,listen: true).addListener(() {
+    //   int newSteps = int.parse(Provider.of<PedometerStepsProvider>(context,listen: false).steps.toString(), radix: 10);
+    //   Provider.of<LevelProvider>(context,listen: false).setLevel(newSteps);
+    // });             // AFTER I COMMENTED THIS CODE EVERYTHING WAS BACK TO NORMAL. SO I AM KEEPING IT COMMENTED. PLEASE FIND ITS ALTERNATIVE
 
     steps.getBurnedRun(steps.steps);
     return Container(

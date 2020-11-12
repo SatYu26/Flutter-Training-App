@@ -64,12 +64,7 @@ class PedometerStepsProvider with ChangeNotifier {
 
     steps = stepCountValue;
     // saveStepsIntoSharedPrefs();
-    print("dsadadasdad ${steps}");
-
-
-
-    steps = stepCountValue;
-    //saveStepsIntoSharedPrefs();
+    // print("dsadadasdad ${steps}");
     notifyListeners();
 
     var dist = stepCountValue; //we pass the integer to a variable called dist
