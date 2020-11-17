@@ -1,3 +1,3 @@
-# Lets Develop It
+# Introduction
 
-An App Similar to StepSetGo Made for an Internship.
+A Flutter App Similar to StepSetGo.
